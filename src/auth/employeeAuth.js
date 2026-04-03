@@ -1,10 +1,7 @@
 const KEY = "bas_employee_session";
 
-export function loginEmployee(employeeId) {
-  const id = String(employeeId || "").trim();
-  if (!id) return false;
-  localStorage.setItem(KEY, JSON.stringify({ employeeId: id, ts: Date.now() }));
-  return true;
+export function setEmployeeSession(employeeId) {
+  localStorage.setItem(KEY, JSON.stringify({ employeeId: String(employeeId), ts: Date.now() }));
 }
 
 export function logoutEmployee() {

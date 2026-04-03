@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { loginEmployee } from "../auth/employeeAuth";
+import React from "react";
+import { Navigate } from "react-router-dom";
+export default function EmployeeLogin() {
+  return <Navigate to="/" replace />;
+}
 
 export default function EmployeeLogin() {
   const navigate = useNavigate();
