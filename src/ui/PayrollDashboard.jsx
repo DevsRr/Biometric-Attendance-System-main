@@ -112,7 +112,14 @@ export default function PayrollDashboard() {
       const base = totalHours * hourlyRate;
       const otPay = overtime * hourlyRate * 1.25;
       const lateDeduct = lateMinutes * (hourlyRate / 60);
-      const absenceDeduct = absences * dailyRate;
+    const hasAnyRecordThisCutoff = attendance.some((r) => {
+  if (!r || r.employeeId !== empId) return false;
+  const d = new Date(r.date);
+  const day = d.getDay();
+  return d >= start && d <= end && day !== 0 && day !== 6;
+});
+
+const absenceDeduct = hasAnyRecordThisCutoff ? absences * dailyRate : 0;
       const net = base + otPay - lateDeduct - absenceDeduct;
 
       let status = "";

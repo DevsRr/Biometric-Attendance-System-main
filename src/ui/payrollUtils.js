@@ -66,16 +66,20 @@ export function computeEmployeePayroll(emp, empId, attendanceRecords) {
     }
   });
 
-  const absences = Math.max(0, totalWorkDays - daysWorked);
+const absences = Math.max(0, totalWorkDays - daysWorked);
   const dailyRate = Number(emp?.rate || 0);
   const hourlyRate = dailyRate / 8;
 
   const base = totalHours * hourlyRate;
   const otPay = overtime * hourlyRate * 1.25;
   const lateDeduct = lateMinutes * (hourlyRate / 60);
-  const absenceDeduct = absences * dailyRate;
-  const net = base + otPay - lateDeduct - absenceDeduct;
 
+  // NEW RULE:
+  // If there are no attendance records at all in the cutoff, don't deduct absences.
+  const hasAnyRecordThisCutoff = records.length > 0;
+  const absenceDeduct = hasAnyRecordThisCutoff ? absences * dailyRate : 0;
+
+  const net = base + otPay - lateDeduct - absenceDeduct;
   return {
     cutoff: { start, end },
     records,
